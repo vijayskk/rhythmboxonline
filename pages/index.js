@@ -20,7 +20,11 @@ export default function Home() {
     });
   }
 
-
+  useEffect(()=>{
+    if(!user){
+      router.push('/login')
+    }
+  },[])
   
     return (
       <div className='bg-black h-screen overflow-hidden'>
@@ -32,12 +36,20 @@ export default function Home() {
   
         <main className='flex'>
           <Sidebar />
-          {/* {user?<button className='text-white' onClick={logout} type="">{user.displayName}</button>:
-          <button className='text-white' onClick={()=>{
-            router.push('/login')
-          }} type="">Login</button>
-          } */}
-          <Center />
+          
+          <Center >
+            <div className='grid grid-flow-row justify-center grid-cols-4'>
+              <div>
+                  <img className=' mx-auto mt-20 rounded-md h-40 w-40' src="https://upload.wikimedia.org/wikipedia/en/8/80/Ed_Sheeran_Perfect_Single_cover.jpg" alt="" />
+                  <p className='text-white text-center mt-2 text-3xl font-semibold'>Song name</p>
+                  <p className='text-white text-center mt-2 text-xl '>Author name</p>
+              </div>
+              
+
+            </div>
+              
+
+          </Center>
         </main>
   
         <div>
