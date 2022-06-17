@@ -46,13 +46,14 @@ function Header() {
         setpodcastname("")
         sethaserror(false)
     };
+    const [channelrefresh, setchannelrefresh] = useContext(ChannelRefreshContext);
     const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: 400,
-        bgcolor: 'background.paper',
+        bgcolor: 'black',
         boxShadow: 24,
         p: 4,
     };
@@ -100,6 +101,7 @@ function Header() {
                                 authoremail: user.email
                             }).then((data) => {
                                 handleClose()
+                                setchannelrefresh(channelrefresh + 1)
                                 setisLoading(false)
                             })
                         })
@@ -124,10 +126,10 @@ function Header() {
         });
     }
     return (
-        <div className='absolute top-5 right-8 flex space-x-4'>
+        <div className='absolute top-5 right-2 md:right-8 flex space-x-4'>
             {user ? <div onClick={handleOpen} className='flex items-center bg-black space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 px-4'>
                 <PlusIcon className='text-white h-5 w-5' />
-                <div className='text-white'>
+                <div className='text-white hidden md:inline'>
                     <h2>Create podcast</h2>
                 </div>
             </div> : null}

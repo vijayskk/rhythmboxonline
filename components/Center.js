@@ -21,9 +21,10 @@ function Center(props) {
     })
 
     return (
-        <div className='flex-grow'>
+        <div className='flex-grow h-screen overflow-y-scroll scrollbar-hide'>
         <Header />
-        <section className={`flex items-end space-x-7 bg-gradient-to-b  to-black ${color} h-80`}>
+        <section className={`flex items-end space-x-7 bg-gradient-to-b  to-black ${color} h-40 md:h-80`}>
+            <p className='text-white text-4xl md:text-7xl font-bold ml-10'>{props.title}</p>
         </section>
             {props.children}
         </div>

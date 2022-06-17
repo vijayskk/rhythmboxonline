@@ -1,14 +1,18 @@
 import { RecoilRoot } from 'recoil'
 import ChannelRefreshContext, { ChannelRefreshContextProvider } from '../contexts/ChannelRefreshContext';
+import { PlayerContextProvider } from '../contexts/PlayerContext';
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
 
-  return( <ChannelRefreshContextProvider 
-  
+  return (<ChannelRefreshContextProvider
+
   >
+    <PlayerContextProvider>
       <Component {...pageProps} />
-    </ChannelRefreshContextProvider>
+
+    </PlayerContextProvider>
+  </ChannelRefreshContextProvider>
   );
 }
 export default MyApp

@@ -25,7 +25,7 @@ function Sidebar() {
   },[user,channelrefresh])
 
   return ( 
-    <div className='overflow-y-scroll scrollbar-hide h-screen '>
+    <div className='overflow-y-scroll scrollbar-hide h-screen hidden md:inline-flex'>
       <div className='text-gray-500 p-5 space-y-2'>
         <button className='flex items-center space-x-2 hover:text-white'>
           <HomeIcon className='h-5 w-5' />
