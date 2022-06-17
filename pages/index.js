@@ -10,10 +10,12 @@ import { useContext, useEffect, useState } from 'react'
 import Center from '../components/Center'
 import { ChannelRefreshContext } from '../contexts/ChannelRefreshContext'
 import Player from '../components/Player'
+import { PlayerContext } from '../contexts/PlayerContext'
 export default function Home() {
   const router = useRouter()
   const [user] = useAuthState(auth)
   const [allsongs, setallsongs] = useState([]);
+  const [player, setPlayer] = useContext(PlayerContext);
   const logout = ()=>{
     firebase.auth().signOut().then(() => {
       // Sign-out successful.
@@ -49,7 +51,9 @@ export default function Home() {
               {
                 allsongs.map((obj)=>{
                   return(
-                    <div>
+                    <div onClick={()=>{
+                      setPlayer(obj)
+                    }}>
                     <img className=' mx-auto mt-20 rounded-md h-40 w-40' src={obj.thumbnailurl} alt="" />
                         <p className='text-white text-center mt-2 text-3xl font-semibold'>{obj.podcastname}</p>
                         <p className='text-white text-center mt-2 text-xl '>{obj.authorname}</p>
