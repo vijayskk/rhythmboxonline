@@ -4,11 +4,11 @@ import Sidebar from '../components/Sidebar'
 import {useRouter} from 'next/router'
 import styles from '../styles/Home.module.css'
 import {useAuthState} from 'react-firebase-hooks/auth'
-import {auth} from '../firebase'
+import {auth, db} from '../firebase'
 import firebase from 'firebase/compat/app'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Center from '../components/Center'
-export default function Home() {
+export default function channels() {
   const router = useRouter()
   const [user] = useAuthState(auth)
 
@@ -20,7 +20,18 @@ export default function Home() {
     });
   }
 
+  const [channeldata, setchanneldata] = useState([]);
+    useEffect(()=>{
+        var url_string = window.location.href
+        var url = new URL(url_string);
+        var id = url.searchParams.get("id");
+        console.log(id);
+        db.collection("channels").doc(id).get().then(data=>{
+            console.log(data.data());
+            setchanneldata(data.data())
+        })
 
+    },[])
   
     return (
       <div className='bg-black h-screen overflow-hidden'>
@@ -37,7 +48,10 @@ export default function Home() {
             router.push('/login')
           }} type="">Login</button>
           } */}
-          <Center />
+          <Center >
+            <p className='text-white text-7xl font-bold ml-20'>{channeldata.channelname}</p>
+            <p className='text-white ml-20 text-3xl mt-4 font-semibold'>By {channeldata.ownername}</p>
+          </Center>
         </main>
   
         <div>
