@@ -51,7 +51,7 @@ export default function Home() {
               {
                 allsongs.map((obj)=>{
                   return(
-                    <div onClick={()=>{
+                    <div key={obj.id} onClick={()=>{
                       setPlayer(obj)
                     }}>
                     <img className=' mx-auto mt-20 rounded-md h-40 w-40' src={obj.thumbnailurl} alt="" />

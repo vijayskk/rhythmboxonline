@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app'
 import {useRouter} from 'next/router'
 import { CircularProgress, LinearProgress } from '@mui/material';
 
-function register() {
+function Register() {
 
 
     const [name,setname] = useState("")
@@ -113,4 +113,4 @@ function register() {
   )
 }
 
-export default register
+export default Register

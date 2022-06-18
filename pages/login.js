@@ -5,7 +5,7 @@ import {auth} from '../firebase'
 import { CircularProgress } from '@mui/material';
 
 
-function login() {
+function Login() {
 
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -78,4 +78,4 @@ function login() {
     )
 }
 
-export default login
+export default Login
