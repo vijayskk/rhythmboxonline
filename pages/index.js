@@ -34,6 +34,7 @@ export default function Home() {
       setallsongs(temp)
     })
   },[channelrefresh])
+
   
     return (
       <div className='bg-black h-screen'>
@@ -49,10 +50,10 @@ export default function Home() {
           <Center title="All Podcasts" >
             <div className='grid grid-flow-row justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
               {
-                allsongs.map((obj)=>{
+                allsongs.map((obj,index)=>{
                   return(
                     <div key={obj.id} onClick={()=>{
-                      setPlayer(obj)
+                      setPlayer({...obj,index:index})
                     }}>
                     <img className=' mx-auto mt-20 rounded-md h-40 w-40' src={obj.thumbnailurl} alt="" />
                         <p className='text-white text-center mt-2 text-3xl font-semibold'>{obj.podcastname}</p>
@@ -60,7 +61,7 @@ export default function Home() {
                     </div>
                   )
                 })
-              }
+              } 
               
 
             </div>
@@ -71,7 +72,7 @@ export default function Home() {
   
         <div className='fixed bottom-0'>
           {/* Player */}
-          <Player />
+          <Player allsongs={allsongs} />
         </div>
       </div>
     )

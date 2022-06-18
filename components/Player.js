@@ -7,7 +7,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { PlayerContext } from '../contexts/PlayerContext';
 import { CircularProgress } from '@mui/material';
 
-function Player() {
+function Player({allsongs}) {
 
     const [player, setPlayer] = useContext(PlayerContext);
     const [isPlaying, setisPlaying] = useState(true);
@@ -57,7 +57,11 @@ function Player() {
 
 
                 <div className='flex items-center justify-evenly'>
-                    <RewindIcon className='h-8 w-8' />
+                    <RewindIcon className='h-8 w-8' onClick={()=>{
+                        if(player.index != 0){
+                            setPlayer({...allsongs[player.index - 1] , index : player.index - 1 })
+                        }
+                    }} />
 
 
                     {
@@ -66,7 +70,11 @@ function Player() {
                         :
                         <PlayIcon className='h-8 w-8' onClick={togglePlay} />
                     }
-                    <FastForwardIcon className='h-8 w-8' />
+                    <FastForwardIcon className='h-8 w-8' onClick={()=>{
+                        if(player.index + 1 < allsongs.length){
+                            setPlayer({...allsongs[player.index + 1] , index : player.index + 1 })
+                        }
+                    }} />
                 </div>
 
 
