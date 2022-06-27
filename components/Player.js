@@ -1,18 +1,24 @@
 import { VolumeUpIcon } from '@heroicons/react/solid';
-import { VolumeUpIcon as VolumeDownIcon  } from '@heroicons/react/outline';
+import { HeartIcon, VolumeUpIcon as VolumeDownIcon  } from '@heroicons/react/outline';
+import {HeartIcon as HeartIconSolid} from '@heroicons/react/solid';
 import { FastForwardIcon, RewindIcon, VolumeOffIcon } from '@heroicons/react/solid';
 import { PlayIcon } from '@heroicons/react/solid';
 import { PauseIcon } from '@heroicons/react/solid';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { PlayerContext } from '../contexts/PlayerContext';
 import { CircularProgress } from '@mui/material';
+import { auth, db } from '../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Player({allsongs}) {
 
     const [player, setPlayer] = useContext(PlayerContext);
+    const [user] = useAuthState(auth)
     const [isPlaying, setisPlaying] = useState(true);
     const [isLoaded, setisLoaded] = useState(false);
     const [volume, setvolume] = useState(100);
+    const [isLiked, setisLiked] = useState(false);
+    const [likeLoading, setlikeLoading] = useState(true);
     const audioPlayer = useRef()
     
     const togglePlay = () =>{
@@ -27,7 +33,32 @@ function Player({allsongs}) {
         
     }
 
+    const likeSong = () =>{
+        if(user && player){
+            db.collection("userLikes").doc(user.email).collection("songs").doc(player.id).set(player)
+            setisLiked(true)
+        }
+    }
 
+    const checkLiked = () =>{
+        setlikeLoading(true)
+        if(user && player){
+            db.collection("userLikes").doc(user.email).collection("songs").doc(player.id).get().then(data=>{
+                if(data.exists){
+                    console.log("isLiked");
+                    setisLiked(true)
+                }else{
+                    console.log("notliked");
+                    setisLiked(false)
+                }
+                setlikeLoading(false)
+            })
+        }
+    }
+
+    useEffect(()=>{
+        checkLiked()
+    },[])
 
     if(player == null){
         return(
@@ -49,10 +80,30 @@ function Player({allsongs}) {
                     }} ref={audioPlayer} className='hidden' src={player.mp3fileurl} autoPlay >
                         
                     </audio>
+                    <input className='hidden' type="text" onKeyDown={(e)=>{
+                        if(e.key == 'Space'){
+                            if(isLoaded){
+                                if(isPlaying){
+                                    togglePause()
+                                }else{
+                                    togglePlay()
+                                }
+                            }
+                        }
+                    }} />
+                    
                     <div className='md:ml-6 ml-2'>
                         <h3 className='text-white font-bold '>{player.podcastname}</h3>
                         <h3 className='text-gray-200 '>{player.authorname}</h3>
                     </div>
+                    {
+                        likeLoading?
+                        <CircularProgress className='h-5 w-5 ml-5' />
+                        :
+                        <div>
+                            {isLiked?<HeartIconSolid className='h-5 ml-5' />:<HeartIcon onClick={likeSong} className='h-5 ml-5'  />}
+                        </div>
+                    }
                 </div>
 
 
@@ -60,6 +111,9 @@ function Player({allsongs}) {
                     <RewindIcon className='h-8 w-8' onClick={()=>{
                         if(player.index != 0){
                             setPlayer({...allsongs[player.index - 1] , index : player.index - 1 })
+                            setisLiked(false)
+                            setlikeLoading(true)
+                            checkLiked()
                         }
                     }} />
 
@@ -73,6 +127,9 @@ function Player({allsongs}) {
                     <FastForwardIcon className='h-8 w-8' onClick={()=>{
                         if(player.index + 1 < allsongs.length){
                             setPlayer({...allsongs[player.index + 1] , index : player.index + 1 })
+                            setisLiked(false)
+                            setlikeLoading(true)
+                            checkLiked()
                         }
                     }} />
                 </div>

@@ -11,7 +11,7 @@ import { ChannelRefreshContext } from '../contexts/ChannelRefreshContext'
 import { v4 as uuidv4 } from 'uuid';
 
 
-function Header() {
+function Header({showAdd}) {
 
     const colors = [
         "bg-indigo-700",
@@ -37,7 +37,11 @@ function Header() {
     const [open, setOpen] = useState(false);
     const [haserror, sethaserror] = useState(false);
     const [error, seterror] = useState("");
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        if(showAdd){
+            setOpen(true)
+        }
+    };
     const handleClose = () => {
         setOpen(false)
         setthumbnail(null)
@@ -62,7 +66,7 @@ function Header() {
         var thumbnailurl
         var mp3fileurl
         
-        if(user){
+        if(user && showAdd){
             if (podcastname == "" ) {
 
                 sethaserror(true)
@@ -127,7 +131,7 @@ function Header() {
     }
     return (
         <div className='absolute top-5 right-2 md:right-8 flex space-x-4'>
-            {user ? <div onClick={handleOpen} className='flex items-center bg-black space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 px-4'>
+            {(user && showAdd) ? <div onClick={handleOpen} className='flex items-center bg-black space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 px-4'>
                 <PlusIcon className='text-white h-5 w-5' />
                 <div className='text-white hidden md:inline'>
                     <h2>Create podcast</h2>
